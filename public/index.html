@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Jinaga Walkthrough - DevOps Against Humanity</title>
+        <link rel="stylesheet" href="./site.css"/>
+    </head>
+    <body>
+        <p>
+            With Jinaga, you record historical facts as JSON documents. Express a fact
+            that represents you as a user. You want your fact to be unique, so you should
+            use a random number. I&apos;ve generated one for you.*
+        </p>
+<pre>
+var user = {
+    type: &apos;Jinaga.User&apos;,
+    identity: -7164293
+};
+j.fact(user);
+</pre>
+        <p>
+            * If you are pairing with a friend, be sure not to use your friend&apos;s number!
+        </p>
+        <textarea placeholder="Enter code here"></textarea>
+        <div class="controls">
+            <input type="button" value="Execute"/>
+        </div>
+    </body>
+</html>
