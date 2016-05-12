@@ -19,9 +19,10 @@ j.fact(user);
         <p>
             * If you are pairing with a friend, be sure not to use your friend&apos;s number!
         </p>
-        <textarea placeholder="Enter code here"></textarea>
+        <textarea id="code" placeholder="Enter code here"></textarea>
         <div class="controls">
-            <input type="button" value="Execute"/>
+            <input type="button" value="Execute" onclick="vm.executeCode(getElementById('code').value)"/>
         </div>
     </body>
+    <script src="./walkthrough.js"></script>
 </html>
