@@ -1,8 +1,11 @@
-var vm = (function () {
+var vm = new (function () {
+    var facts = [];
+    
     var sandbox = new (function () {
+        var sending = [];
         var j = {
             fact: function fact(obj) {
-                window.alert(JSON.stringify(obj));
+                sending.push(obj);
             }
         };
         this.variables = {};
@@ -21,10 +24,12 @@ var vm = (function () {
             });
             
             eval(preamble + code + post);
+            
+            facts = facts.concat(sending);
         }
         
         function findVariableNames(code) {
-            var pattern = /var ([a-zA-Z][a-zA-Z0-9]*)/g;
+            var pattern = /var(?:[ \t]+)([a-zA-Z][a-zA-Z0-9]*)/g;
             var results = [];
             var match = pattern.exec(code);
             while (match !== null) {
@@ -35,9 +40,17 @@ var vm = (function () {
         }
     })();
     
-    return {
-        executeCode:  function executeCode(code) {
-            sandbox.eval(code);
+    this.code = ko.observable('');
+    this.exception = ko.observable('');
+    this.executeCode = function executeCode() {
+        this.exception('');
+        try {
+            sandbox.eval(this.code());
+        }
+        catch (x) {
+            this.exception(x.message);
         }
     };
 })();
+
+ko.applyBindings(vm);

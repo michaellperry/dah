@@ -19,10 +19,12 @@ j.fact(user);
         <p>
             * If you are pairing with a friend, be sure not to use your friend&apos;s number!
         </p>
-        <textarea id="code" placeholder="Enter code here"></textarea>
+        <textarea data-bind="value: code" placeholder="Enter code here"></textarea>
         <div class="controls">
-            <input type="button" value="Execute" onclick="vm.executeCode(getElementById('code').value)"/>
+            <input type="button" value="Execute" data-bind="click: vm.executeCode()"/>
         </div>
+        <p data-bind="text: exception"></p>
     </body>
+    <script src="../bower_components/knockout/dist/knockout.js"></script>
     <script src="./walkthrough.js"></script>
 </html>

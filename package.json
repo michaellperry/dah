@@ -1,0 +1,21 @@
+{
+  "name": "dah",
+  "version": "1.0.0",
+  "description": "DevOps Against Humanity as a Jinaga walkthrough",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaellperry/dah.git"
+  },
+  "author": "Michael L Perry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaellperry/dah/issues"
+  },
+  "homepage": "https://github.com/michaellperry/dah#readme",
+  "dependencies": {
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "dah",
+  "description": "DevOps Against Humanity as a Jinaga walkthrough",
+  "main": "server.js",
+  "authors": [
+    "Michael L Perry"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "globals"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "~3.4.0"
+  }
+}
