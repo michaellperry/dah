@@ -5,16 +5,33 @@ var vm = (function () {
                 window.alert(JSON.stringify(obj));
             }
         };
-        this.variables = {
-            user: null
-        };
+        this.variables = {};
         
         this.eval = function (code) {
-            var user = this.variables.user;
+            var variableNames = findVariableNames(code);
             
-            eval(code);
+            var preamble = "";
+            for (var name in this.variables) {
+                preamble += "var " + name + " = this.variables." + name + ";\n";
+            }
             
-            this.variables.user = user;
+            var post = "\n";
+            variableNames.forEach(function (name) {
+                post += "this.variables." + name + " = " + name + ";\n";
+            });
+            
+            eval(preamble + code + post);
+        }
+        
+        function findVariableNames(code) {
+            var pattern = /var ([a-zA-Z][a-zA-Z0-9]*)/g;
+            var results = [];
+            var match = pattern.exec(code);
+            while (match !== null) {
+                results.push(match[1]);
+                match = pattern.exec(code);
+            }
+            return results;
         }
     })();
     
