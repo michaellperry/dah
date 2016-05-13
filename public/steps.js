@@ -2,10 +2,10 @@ var steps = [
     {
         instructions: 'With Jinaga, you record historical facts as JSON documents. Express a fact that represents you as a user. You want your fact to be unique, so you should use a random number. I\'ve generated one for you. *',
         example:
-            'var user = {'               + '\n' +
-            '    type: \'Jinaga.User\',' + '\n' +
-            '    identity: -7164293'     + '\n' +
-            '};'                         + '\n' +
+            'var user = {'                                     + '\n' +
+            '    type: \'Jinaga.User\','                       + '\n' +
+            '    identity: ' + Math.floor(Math.random()*65536) + '\n' +
+            '};'                                               + '\n' +
             'j.fact(user);',
         footnote: '* If you are pairing with a friend, be sure not to use your friend\'s number!',
         expectation: function (facts, variables) {
