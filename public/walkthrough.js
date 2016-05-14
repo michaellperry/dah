@@ -1,6 +1,8 @@
 var vm = new (function () {
     var nextFacts = [];
     var facts = [];
+    var nextCards = [];
+    var cards = [];
     
     var sandbox = new (function () {
         var j = {
@@ -25,6 +27,7 @@ var vm = new (function () {
 
             nextFacts = [];
             this.nextVariables = {};
+            nextCards = [];
             eval(preamble + code + post);
         }
         
@@ -33,6 +36,7 @@ var vm = new (function () {
             for (var name in this.nextVariables) {
                 this.variables[name] = this.nextVariables[name];
             }
+            cards = cards.concat(nextCards);
         }
         
         function findVariableNames(code) {
@@ -44,6 +48,10 @@ var vm = new (function () {
                 match = pattern.exec(code);
             }
             return results;
+        }
+        
+        function addCard(card) {
+            nextCards.push(card);
         }
     })();
     
@@ -63,7 +71,7 @@ var vm = new (function () {
         this.exception('');
         try {
             sandbox.eval(this.code());
-            var result = steps[this.step()].expectation(nextFacts, sandbox.nextVariables);
+            var result = steps[this.step()].expectation(nextFacts, sandbox.nextVariables, nextCards);
             if (result.matched) {
                 sandbox.advance();
                 this.step(this.step()+1);

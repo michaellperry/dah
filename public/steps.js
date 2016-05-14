@@ -94,7 +94,41 @@ var steps = [
         }
     },
     {
-        instructions: 'Enough with the facts! I want some cards. Since you are a player in a game, a friendly bot has dealt you some cards. Write a function that describes the shape of a card.',
+        instructions: 'Enough with the facts! I want some cards. But what are we going to do with a card once we get one? I know. Call the "addCard" function, and I\'ll display it on this page.',
+        example:
+            'addCard({'                      + '\n' +
+            '    phrase: "Your phrase here"' + '\n' +
+            '});',
+        footnote: 'Pass an object with a phrase. Go ahead and make up your own.',
+        expectation: function (facts, variables, cards) {
+            if (cards.some(function (card) {
+                return card.hasOwnProperty('phrase') &&
+                    card.phrase !== 'Your phrase here' &&
+                    card.phrase !== 'Your own phrase';
+            })) {
+                return { matched: true };
+            }
+            else if (cards.some(function (card) {
+                return card.hasOwnProperty('phrase') &&
+                    card.phrase === 'Your own phrase';
+            })) {
+                return { matched: false, message: 'You\'re very clever. Try again.' };
+            }
+            else if (cards.some(function (card) {
+                return card.hasOwnProperty('phrase');
+            })) {
+                return { matched: false, message: 'No, no. Enter your own phrase.' };
+            }
+            else if (cards.length > 0) {
+                return { matched: false, message: 'The card needs to have a phrase.'}
+            }
+            else {
+                return { matched: false, message: 'Please call "addCard" with an object.'}
+            }
+        }
+    },
+    {
+        instructions: 'Since you are a player in a game, a friendly bot has dealt you some cards. Write a function that describes the shape of a card.',
         example:
             'function cardForPlayer(p) {' + '\n' +
             '    return {'                + '\n' +
