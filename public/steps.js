@@ -13,10 +13,102 @@ var steps = [
                 return fact.hasOwnProperty('type') && fact.type == 'Jinaga.User' &&
                     fact.hasOwnProperty('identity');
             })) {
+                if (variables.hasOwnProperty('user')) {
+                    return { matched: true };
+                }
+                else {
+                    return { matched: false, message: 'You will need that fact later. Please save it in the "user" variable.' };
+                }
+            }
+            else {
+                return { matched: false, message: 'I didn\'t see a fact for you as a user. Please call "j.fact()".' };
+            }
+        }
+    },
+    {
+        instructions: 'Great. Now you will join a game. The game is represented by another fact. I\'ve generated another example for you. *',
+        example:
+            'var game = {'                                     + '\n' +
+            '    type: \'DAH.Game\','                          + '\n' +
+            '    root: {},'                                    + '\n' +
+            '    identity: ' + Math.floor(Math.random()*65536) + '\n' +
+            '};'                                               + '\n' +
+            'j.fact(game);',
+        footnote: '* You may want to share this game with a friend, so you can play together.',
+        expectation: function (facts, variables) {
+            if (facts.some(function (fact) {
+                return fact.hasOwnProperty('type') && fact.type == 'DAH.Game' &&
+                    fact.hasOwnProperty('identity') &&
+                    fact.hasOwnProperty('root') && Object.keys(fact.root).length == 0;
+            })) {
+                if (variables.hasOwnProperty('game')) {
+                    return { matched: true };
+                }
+                else {
+                    return { matched: false, message: 'You will need that fact later. Please save it in the "game" variable.' };
+                }
+            }
+            else if (facts.some(function (fact) {
+                return fact.hasOwnProperty('type') && fact.type == 'DAH.Game' &&
+                    fact.hasOwnProperty('identity') &&
+                    fact.hasOwnProperty('root');
+            })) {
+                return { matched: false, message: 'The root of the game needs to be the empty object. I\'ll explain later.' };
+            }
+            else if (facts.some(function (fact) {
+                return fact.hasOwnProperty('type') && fact.type == 'DAH.Game' &&
+                    fact.hasOwnProperty('identity');
+            })) {
+                return { matched: false, message: 'The game needs to have a "root". I\'ll explain later.' };
+            }
+            else {
+                return { matched: false, message: 'I didn\'t see a fact for the game.' };
+            }
+        }
+    },
+    {
+        instructions: 'In order for you to join the game, you must become a player. A player is a "user" in a "game", and is represented by ... you guessed it ... a fact.',
+        example:
+            'var player = {'            + '\n' +
+            '    type: \'DAH.Player\',' + '\n' +
+            '    user: user,'           + '\n' +
+            '    game: game'            + '\n' +
+            '};'                        + '\n' +
+            'j.fact(player);',
+        footnote: 'The "player" referenes the "user" and "game" facts which came before. They are called predecessors.',
+        expectation: function (facts, variables) {
+            if (facts.some(function (fact) {
+                return fact.hasOwnProperty('type') && fact.type == 'DAH.Player' &&
+                    fact.hasOwnProperty('user') && fact.hasOwnProperty('game');
+            })) {
+                if (variables.hasOwnProperty('player')) {
+                    return { matched: true };
+                }
+                else {
+                    return { matched: false, message: 'You will need that fact later. Please save it in the "player" variable.' };
+                }
+            }
+            else {
+                return { matched: false, message: 'I didn\'t see a fact for you as a player. Don\'t forget to call "j.fact()".' };
+            }
+        }
+    },
+    {
+        instructions: 'Enough with the facts! I want some cards. Since you are a player in a game, a friendly bot has dealt you some cards. Write a function that describes the shape of a card.',
+        example:
+            'function cardForPlayer(p) {' + '\n' +
+            '    return {'                + '\n' +
+            '        type: \'DAH.Card\',' + '\n' +
+            '        player: p'           + '\n' +
+            '    };'                      + '\n' +
+            '}',
+        footnote: 'This is called a template function. All cards dealt to a player are facts matching this template.',
+        expectation: function (facts, variables) {
+            if (variables.hasOwnProperty('cardForPlayer') && typeof variables.cardForPlayer === 'function') {
                 return { matched: true };
             }
             else {
-                return { matched: false, message: 'I didn\'t see a fact for you as a user.' };
+                return { matched: false, message: 'Please define a function called "cardForPlayer".' };
             }
         }
     },
@@ -25,7 +117,7 @@ var steps = [
         example: 'npm install jinaga',
         footnote: '',
         expectation: function (facts, variables) {
-            return { matched: false };
+            return { matched: false, message: 'We\'re done here. Go build a real app.' };
         }
     }
 ];

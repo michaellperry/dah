@@ -1,14 +1,15 @@
 var vm = new (function () {
+    var nextFacts = [];
     var facts = [];
     
     var sandbox = new (function () {
-        var sending = [];
         var j = {
             fact: function fact(obj) {
-                sending.push(obj);
+                nextFacts.push(obj);
             }
         };
         this.variables = {};
+        this.nextVariables = {};
         
         this.eval = function (code) {
             var preamble = "";
@@ -19,17 +20,23 @@ var vm = new (function () {
             var post = "\n";
             var variableNames = findVariableNames(code);
             variableNames.forEach(function (name) {
-                post += "this.variables." + name + " = " + name + ";\n";
+                post += "this.nextVariables." + name + " = " + name + ";\n";
             });
 
-            sending = [];            
+            nextFacts = [];
+            this.nextVariables = {};
             eval(preamble + code + post);
-            
-            facts = facts.concat(sending);
+        }
+        
+        this.advance = function () {
+            facts = facts.concat(nextFacts);
+            for (var name in this.nextVariables) {
+                this.variables[name] = this.nextVariables[name];
+            }
         }
         
         function findVariableNames(code) {
-            var pattern = /var(?:[ \t]+)([a-zA-Z][a-zA-Z0-9]*)/g;
+            var pattern = /(?:var|function)(?:[ \t\n]+)([a-zA-Z][a-zA-Z0-9]*)/g;
             var results = [];
             var match = pattern.exec(code);
             while (match !== null) {
@@ -56,8 +63,9 @@ var vm = new (function () {
         this.exception('');
         try {
             sandbox.eval(this.code());
-            var result = steps[this.step()].expectation(facts, sandbox.variables);
+            var result = steps[this.step()].expectation(nextFacts, sandbox.nextVariables);
             if (result.matched) {
+                sandbox.advance();
                 this.step(this.step()+1);
                 this.code('');
             }
