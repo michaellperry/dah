@@ -128,6 +128,19 @@ var steps = [
         }
     },
     {
+        instructions: 'Alright, let\'s clear these cards.',
+        example: 'clearCards();',
+        footnote: '',
+        expectation: function (facts, variables, cards) {
+            if (cards.length === 0) {
+                return { matched: true };
+            }
+            else {
+                return { matched: false, message: 'Just call the function and I\'ll get rid of these cards.' };
+            }
+        }
+    },
+    {
         instructions: 'Since you are a player in a game, a friendly bot has dealt you some cards. Write a function that describes the shape of a card.',
         example:
             'function cardForPlayer(p) {' + '\n' +

@@ -1,7 +1,6 @@
 var vm = new (function () {
     var nextFacts = [];
     var facts = [];
-    var nextCards = [];
     
     var sandbox = new (function () {
         var j = {
@@ -26,7 +25,6 @@ var vm = new (function () {
 
             nextFacts = [];
             this.nextVariables = {};
-            nextCards = [];
             eval(preamble + code + post);
         }
         
@@ -53,8 +51,10 @@ var vm = new (function () {
     var cards = this.cards;
     function addCard(card) {
         cards.push(card);
-        nextCards.push(card);
     };
+    function clearCards() {
+        cards.removeAll();
+    }
     
     this.step = ko.observable(0);
     this.instructions = ko.computed(function () {
@@ -72,7 +72,7 @@ var vm = new (function () {
         this.exception('');
         try {
             sandbox.eval(this.code());
-            var result = steps[this.step()].expectation(nextFacts, sandbox.nextVariables, nextCards);
+            var result = steps[this.step()].expectation(nextFacts, sandbox.nextVariables, cards());
             if (result.matched) {
                 sandbox.advance();
                 this.step(this.step()+1);
