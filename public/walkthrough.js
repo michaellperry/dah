@@ -1,11 +1,17 @@
+var jinaga = new Jinaga();
+jinaga.sync(new JinagaDistributor("ws://localhost:8080/"));
+
 var vm = new (function () {
     var nextFacts = [];
-    var facts = [];
     
     var sandbox = new (function () {
         var j = {
             fact: function fact(obj) {
                 nextFacts.push(obj);
+                jinaga.fact(obj);
+            },
+            watch: function watch(start, templates, resultAdded, resultRemoved) {
+                return jinaga.watch(start, templates, resultAdded, resultRemoved);
             }
         };
         this.variables = {};
@@ -29,7 +35,6 @@ var vm = new (function () {
         }
         
         this.advance = function () {
-            facts = facts.concat(nextFacts);
             for (var name in this.nextVariables) {
                 this.variables[name] = this.nextVariables[name];
             }

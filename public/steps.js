@@ -160,6 +160,21 @@ var steps = [
         }
     },
     {
+        instructions: 'When you see a fact matching the template function, you want to call the "addCard" function. Set up a "watch" to do just that.',
+        example:
+            'var cardWatch = j.watch('               + '\n' +
+            '    player, [cardForPlayer], addCard);',
+        footnote: 'I bet you are wondering why we\'re passing an array of template functions. That\'s a good question.',
+        expectation: function (facts, variables) {
+            if (variables.hasOwnProperty('cardWatch')) {
+                return { matched: true };
+            }
+            else {
+                return { matched: false, message: 'You should really save the watch to the "cardWatch" variable.' };
+            }
+        }
+    },
+    {
         instructions: 'So that\'s it. Go forth and build something cool.',
         example: 'npm install jinaga',
         footnote: '',

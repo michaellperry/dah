@@ -17,5 +17,7 @@
   },
   "homepage": "https://github.com/michaellperry/dah#readme",
   "dependencies": {
+    "express": "^4.13.4",
+    "jinaga": "^1.5.1"
   }
 }
