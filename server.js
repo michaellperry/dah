@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var Bot = require('./bot');
 
 var app = express();
 var server = http.createServer(app);
@@ -11,6 +12,11 @@ app.use("/public", express.static(__dirname + "/public"));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
+app.get("/config.js", function(req, res, next) {
+    res.send(
+        "var distributorUrl = \"ws://" + req.headers.host + "/\";\n");
+    res.end();
+});
 
 require('./startup/distributor')(server);
 // Additional startup will go here.
@@ -21,3 +27,5 @@ server.listen(process.env.PORT || 8080, function () {
 
     console.log('ImprovingU listening at http://%s:%s', host, port);
 });
+
+new Bot().start();

@@ -1,5 +1,5 @@
 var jinaga = new Jinaga();
-jinaga.sync(new JinagaDistributor("ws://localhost:8080/"));
+jinaga.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
 
 var vm = new (function () {
     var nextFacts = [];
