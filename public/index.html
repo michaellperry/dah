@@ -12,6 +12,11 @@
             <input type="button" value="Execute" data-bind="click: vm.executeCode"/>
         </div>
         <p data-bind="text: exception"></p>
+        <div class="cards" data-bind="foreach: cards">
+            <div class="card">
+                <p data-bind="text: phrase"></p>
+            </div>
+        </div>
     </body>
     <script src="../bower_components/knockout/dist/knockout.js"></script>
     <script src="./steps.js"></script>

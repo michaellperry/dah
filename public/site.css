@@ -38,3 +38,26 @@ div.controls input {
     margin-left: auto;
     margin-right: 0px;
 }
+
+div.cards {
+    width: 640px;
+    margin: 12px auto;
+}
+
+div.card {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 152px;
+    height: 220px;
+    margin-bottom: 6px;
+    border: 1px black solid;
+    border-radius: 12px;
+    background-color: white;
+    font-size: 16px;
+}
+
+div.card p {
+    width: auto;
+    text-align: left;
+    margin: 12px;
+}

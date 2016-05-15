@@ -2,7 +2,6 @@ var vm = new (function () {
     var nextFacts = [];
     var facts = [];
     var nextCards = [];
-    var cards = [];
     
     var sandbox = new (function () {
         var j = {
@@ -36,7 +35,6 @@ var vm = new (function () {
             for (var name in this.nextVariables) {
                 this.variables[name] = this.nextVariables[name];
             }
-            cards = cards.concat(nextCards);
         }
         
         function findVariableNames(code) {
@@ -49,11 +47,14 @@ var vm = new (function () {
             }
             return results;
         }
-        
-        function addCard(card) {
-            nextCards.push(card);
-        }
     })();
+        
+    this.cards = ko.observableArray([]);
+    var cards = this.cards;
+    function addCard(card) {
+        cards.push(card);
+        nextCards.push(card);
+    };
     
     this.step = ko.observable(0);
     this.instructions = ko.computed(function () {
