@@ -18,8 +18,8 @@ app.get("/config.js", function(req, res, next) {
     res.end();
 });
 
-require('./startup/distributor')(server);
-// Additional startup will go here.
+var distributor = require('./startup/distributor')(server);
+require('./startup/bot')(distributor);
 
 server.listen(process.env.PORT || 8080, function () {
     var host = server.address().address;
