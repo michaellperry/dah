@@ -1,6 +1,8 @@
 var http = require('http');
 var express = require('express');
-var Bot = require('./bot');
+var Bot = require('./startup/bot');
+var Jinaga = require('jinaga');
+var JinagaConnector = require('jinaga/connector');
 
 var app = express();
 var server = http.createServer(app);
@@ -19,7 +21,6 @@ app.get("/config.js", function(req, res, next) {
 });
 
 var distributor = require('./startup/distributor')(server);
-require('./startup/bot')(distributor);
 
 server.listen(process.env.PORT || 8080, function () {
     var host = server.address().address;
@@ -28,4 +29,6 @@ server.listen(process.env.PORT || 8080, function () {
     console.log('ImprovingU listening at http://%s:%s', host, port);
 });
 
-new Bot().start();
+var j = new Jinaga();
+j.sync(new JinagaConnector(distributor));
+new Bot(j).start();

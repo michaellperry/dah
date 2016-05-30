@@ -8,5 +8,5 @@ module.exports = function( server ) {
         done(null);
     }
 
-    JinagaDistributor.attach(provider, provider, server, authenticateUser);
+    return JinagaDistributor.attach(provider, provider, server, authenticateUser);
 };

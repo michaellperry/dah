@@ -1,0 +1,2 @@
+#!/bin/sh
+cp ../jinaga/node/*.js node_modules/jinaga
