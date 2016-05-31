@@ -19,6 +19,6 @@
   ],
   "dependencies": {
     "knockout": "~3.4.0",
-    "jinaga": "^1.5.1"
+    "jinaga": "^1.6.0"
   }
 }
