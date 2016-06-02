@@ -4,9 +4,9 @@
         <link rel="stylesheet" href="/public/site.css"/>
     </head>
     <body>
-        <p data-bind="text: instructions"></p>
+        <p class="instructions" data-bind="text: instructions"></p>
         <pre data-bind="text: example"></pre>
-        <p data-bind="text: footnote"></p>
+        <p class="footnote" data-bind="text: footnote"></p>
         <textarea data-bind="value: code" placeholder="Enter code here"></textarea>
         <div class="controls">
             <input type="button" value="Execute" data-bind="click: vm.executeCode"/>

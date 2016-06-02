@@ -10,13 +10,24 @@ p {
     text-align: center;
 }
 
+p.instructions {
+    height: 112px;
+    overflow-y: auto;
+}
+
+p.footnote {
+    height: 56px;
+}
+
 pre {
     font-family: Courier New, Courier, monospace;
     width: 616px;
+    height: 162px;
     margin: 36px auto;
     padding: 12px;
     border: 1px lightgray solid;
     background-color: #DDDDDD;
+    overflow-y: auto;
 }
 
 textarea {
