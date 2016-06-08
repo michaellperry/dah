@@ -19,6 +19,12 @@ p.footnote {
     height: 56px;
 }
 
+p.notice {
+    font-size: 12px;
+    color: #444444;
+    text-align: center;
+}
+
 pre {
     font-family: Courier New, Courier, monospace;
     width: 616px;
@@ -55,15 +61,18 @@ div.cards {
     margin: 12px auto;
 }
 
+div.blackCards {
+    width: 640px;
+    margin: 12px auto;
+}
+
 div.card {
     display: inline-flex;
     flex-wrap: wrap;
     width: 152px;
     height: 220px;
     margin-bottom: 6px;
-    border: 1px black solid;
     border-radius: 12px;
-    background-color: white;
     font-size: 16px;
 }
 
@@ -71,4 +80,16 @@ div.card p {
     width: auto;
     text-align: left;
     margin: 12px;
+}
+
+div.cards div.card {
+    background-color: white;
+    border: 1px black solid;
+    color: black;
+}
+
+div.blackCards div.card {
+    background-color: black;
+    border: 1px white solid;
+    color: white;
 }

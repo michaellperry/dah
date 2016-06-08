@@ -17,6 +17,13 @@
                 <p data-bind="text: phrase"></p>
             </div>
         </div>
+        <div class="blackCards" data-bind="foreach: blackCards">
+            <div class="card">
+                <p data-bind="text: phrase"></p>
+            </div>
+        </div>
+        <p class="notice">Based on <a href="https://github.com/bridgetkromhout/devops-against-humanity">DevOps Against Humanity</a>. Built with <a href="http://jinaga.com">Jinaga</a> by <a href="http://michaelperry.net">Michael L Perry</a>.</p>
+        <p class="notice">This demo licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">Creative Commons (CC-BY-NC-SA 2.0)</a>. Jinaga licensed under <a href="https://raw.githubusercontent.com/michaellperry/jinaga/master/LICENSE">MIT.</a></p>
     </body>
     <script src="/bower_components/knockout/dist/knockout.js"></script>
     <script src="/bower_components/jinaga/jinaga.js"></script>

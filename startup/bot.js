@@ -1,3 +1,6 @@
+var getWhiteCards = require('./white_cards');
+var getBlackCards = require('./black_cards');
+
 function gamesInRoot(r) {
     return {
         type: 'DAH.Game',
@@ -43,6 +46,7 @@ function Bot(j) {
     function Dealer(game) {
         var players = [];
         var playerWatch = null;
+        var whiteCards = getWhiteCards();
         
         this.start = function () {
             playerWatch = j.watch(game, [playerInGame], addPlayer, removePlayer);
@@ -53,17 +57,26 @@ function Bot(j) {
         
         function addPlayer(player) {
             players.push(player);
-            j.fact({
-                type: 'DAH.Card',
-                player: player,
-                phrase: 'I\'m a friendly bot'
-            });
+            for (var i = 0; i < 4; i++)
+                dealWhiteCard(player);
         }
+        
         function removePlayer(player) {
             var index = players.indexOf(player);
             if (index >= 0) {
                 players.splice(index, 1);
             }
+        }
+        
+        function dealWhiteCard(player) {
+            var index = Math.floor(Math.random() * whiteCards.length);
+            var card = whiteCards[index];
+            whiteCards.splice(index, 1);
+            j.fact({
+                type: 'DAH.Card',
+                player: player,
+                phrase: card
+            });
         }
     }
 }

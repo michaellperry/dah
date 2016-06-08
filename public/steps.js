@@ -175,6 +175,38 @@ var steps = [
         }
     },
     {
+        instructions: 'Look at that! There are your cards. Now you\'ll want to see the black card for this round. Write a template function looking for a \'DAH.Round\'.',
+        example:
+            'function roundsInGame(g) {'                      + '\n' +
+            '    return {'                                    + '\n' +
+            '        type: \'Enter the type here\','          + '\n' +
+            '        game: \'Can you guess what goes here?\'' + '\n' +
+            '    };'                                          + '\n' +
+            '}',
+        footnote: 'Hint: The type is \'DAH.Round\', and the game is g.',
+        expectation: function (facts, variables) {
+            if (variables.hasOwnProperty('roundsInGame') && typeof(variables.roundsInGame) === 'function')
+                return { matched: true };
+            else
+                return { matched: false, message: 'Define a function called "roundsInGame".' };
+        }
+    },
+    {
+        instructions: 'Watch for rounds in your game, and then call showBlackCard to display that card.',
+        example:
+            'var roundWatch = j.watch('                    + '\n' +
+            '    game, [theTemplateFunctionYouJustWrote], theFunctionYouWantToCall);',
+        footnote: 'Hint: The name of the template function you just wrote is "roundsInGame"',
+        expectation: function (facts, variables) {
+            if (variables.hasOwnProperty('roundWatch')) {
+                return { matched: true };
+            }
+            else {
+                return { matched: false, message: 'Save the watch to the "roundWatch" variable.' };
+            }
+        }
+    },
+    {
         instructions: 'So that\'s it. Go forth and build something cool.',
         example: 'npm install jinaga',
         footnote: '',

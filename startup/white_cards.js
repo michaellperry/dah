@@ -1,4 +1,4 @@
-module.export = [
+module.exports = function() { return [
     "Angular js",
     "A former MENSA member",
     "Being acquired by Oracle",
@@ -484,4 +484,4 @@ module.export = [
     "wat",
     "kanban",
     "Halt and Catch Fire"
-];
+]; }

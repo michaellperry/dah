@@ -1,4 +1,4 @@
-module.export = [
+module.exports = function() { return [
     { phrase: "Googelure.js", cards: 1 },
     { phrase: "140 characters is just enough to explain _____.", cards: 1 },
     { phrase: "_____ all the way down.", cards: 1 },
@@ -397,7 +397,6 @@ module.export = [
     { phrase: "End-to-end _____.", cards: 1 },
     { phrase: "It's like _____ on _____.", cards: 2 },
     { phrase: "________ will help you remember to sanitze your database inputs.", cards: 1 },
-    { phrase: "abcdef", cards: 1 },
     { phrase: "_____ took EBS down again today.", cards: 1 },
     { phrase: "_____, the final solution.", cards: 1 },
     { phrase: "We're running _____ in production?!", cards: 1 },
@@ -405,8 +404,7 @@ module.export = [
     { phrase: "We don't have enough package managers said _____", cards: 1 },
     { phrase: "_____ is more reliable than ______", cards: 2 },
     { phrase: "_____ ate all my memory", cards: 1 },
-    { phrase: "We accidently the whole _____..", cards: 1 },
     { phrase: "It's easy! Just run _____", cards: 1 },
     { phrase: "I assure you _____ is secure!", cards: 1 },
     { phrase: "Our backup policy is _____", cards: 1 }
-]
+]; }

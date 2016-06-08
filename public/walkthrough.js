@@ -53,12 +53,17 @@ var vm = new (function () {
     })();
         
     this.cards = ko.observableArray([]);
+    this.blackCards = ko.observableArray([]);
     var cards = this.cards;
+    var blackCards = this.blackCards;
     function addCard(card) {
         cards.push(card);
-    };
+    }
     function clearCards() {
         cards.removeAll();
+    }
+    function showBlackCard(card) {
+        blackCards.push(card);
     }
     
     this.step = ko.observable(0);
