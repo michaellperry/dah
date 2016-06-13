@@ -59,12 +59,15 @@ var vm = new (function () {
     var blackCards = this.blackCards;
     function addCard(card) {
         cards.push(card);
+        sandbox.variables.cards = cards();
     }
     function clearCards() {
         cards.removeAll();
+        sandbox.variables.cards = cards();
     }
     function showBlackCard(card) {
         blackCards.push(card);
+        sandbox.variables.round = card;
     }
     function skip(j) {
         vm.step(skipSteps(sandbox.variables, j, addCard, showBlackCard));

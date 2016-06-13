@@ -14,14 +14,14 @@ var steps = [
                     fact.hasOwnProperty('identity');
             })) {
                 if (variables.hasOwnProperty('user')) {
-                    return { matched: true };
+                    return pass();
                 }
                 else {
-                    return { matched: false, message: 'You will need that fact later. Please save it in the "user" variable.' };
+                    return fail('You will need that fact later. Please save it in the "user" variable.');
                 }
             }
             else {
-                return { matched: false, message: 'I didn\'t see a fact for you as a user. Please call "j.fact()".' };
+                return fail('I didn\'t see a fact for you as a user. Please call "j.fact()".');
             }
         }
     },
@@ -42,10 +42,10 @@ var steps = [
                     fact.hasOwnProperty('root') && Object.keys(fact.root).length == 0;
             })) {
                 if (variables.hasOwnProperty('game')) {
-                    return { matched: true };
+                    return pass();
                 }
                 else {
-                    return { matched: false, message: 'You will need that fact later. Please save it in the "game" variable.' };
+                    return fail('You will need that fact later. Please save it in the "game" variable.');
                 }
             }
             else if (facts.some(function (fact) {
@@ -53,16 +53,16 @@ var steps = [
                     fact.hasOwnProperty('identity') &&
                     fact.hasOwnProperty('root');
             })) {
-                return { matched: false, message: 'The root of the game needs to be the empty object. I\'ll explain later.' };
+                return fail('The root of the game needs to be the empty object. I\'ll explain later.');
             }
             else if (facts.some(function (fact) {
                 return fact.hasOwnProperty('type') && fact.type == 'DAH.Game' &&
                     fact.hasOwnProperty('identity');
             })) {
-                return { matched: false, message: 'The game needs to have a "root". I\'ll explain later.' };
+                return fail('The game needs to have a "root". I\'ll explain later.');
             }
             else {
-                return { matched: false, message: 'I didn\'t see a fact for the game.' };
+                return fail('I didn\'t see a fact for the game.');
             }
         }
     },
@@ -82,14 +82,14 @@ var steps = [
                     fact.hasOwnProperty('user') && fact.hasOwnProperty('game');
             })) {
                 if (variables.hasOwnProperty('player')) {
-                    return { matched: true };
+                    return pass();
                 }
                 else {
-                    return { matched: false, message: 'You will need that fact later. Please save it in the "player" variable.' };
+                    return fail('You will need that fact later. Please save it in the "player" variable.');
                 }
             }
             else {
-                return { matched: false, message: 'I didn\'t see a fact for you as a player. Don\'t forget to call "j.fact()".' };
+                return fail('I didn\'t see a fact for you as a player. Don\'t forget to call "j.fact()".');
             }
         }
     },
@@ -106,24 +106,24 @@ var steps = [
                     card.phrase !== 'Your phrase here' &&
                     card.phrase !== 'Your own phrase';
             })) {
-                return { matched: true };
+                return pass();
             }
             else if (cards.some(function (card) {
                 return card.hasOwnProperty('phrase') &&
                     card.phrase === 'Your own phrase';
             })) {
-                return { matched: false, message: 'You\'re very clever. Try again.' };
+                return fail('You\'re very clever. Try again.');
             }
             else if (cards.some(function (card) {
                 return card.hasOwnProperty('phrase');
             })) {
-                return { matched: false, message: 'No, no. Enter your own phrase.' };
+                return fail('No, no. Enter your own phrase.');
             }
             else if (cards.length > 0) {
-                return { matched: false, message: 'The card needs to have a phrase.'}
+                return fail('The card needs to have a phrase.');
             }
             else {
-                return { matched: false, message: 'Please call "addCard" with an object.'}
+                return fail('Please call "addCard" with an object.');
             }
         }
     },
@@ -133,10 +133,10 @@ var steps = [
         footnote: '',
         expectation: function (facts, variables, cards) {
             if (cards.length === 0) {
-                return { matched: true };
+                return pass();
             }
             else {
-                return { matched: false, message: 'Just call the function and I\'ll get rid of these cards.' };
+                return fail('Just call the function and I\'ll get rid of these cards.');
             }
         }
     },
@@ -152,10 +152,10 @@ var steps = [
         footnote: 'This is called a template function. All cards dealt to a player are facts matching this template.',
         expectation: function (facts, variables) {
             if (variables.hasOwnProperty('cardForPlayer') && typeof variables.cardForPlayer === 'function') {
-                return { matched: true };
+                return pass();
             }
             else {
-                return { matched: false, message: 'Please define a function called "cardForPlayer".' };
+                return fail('Please define a function called "cardForPlayer".');
             }
         }
     },
@@ -167,10 +167,10 @@ var steps = [
         footnote: 'I bet you are wondering why we\'re passing an array of template functions. That\'s a good question.',
         expectation: function (facts, variables) {
             if (variables.hasOwnProperty('cardWatch')) {
-                return { matched: true };
+                return pass();
             }
             else {
-                return { matched: false, message: 'You should really save the watch to the "cardWatch" variable.' };
+                return fail('You should really save the watch to the "cardWatch" variable.');
             }
         }
     },
@@ -186,9 +186,9 @@ var steps = [
         footnote: 'Hint: The type is \'DAH.Round\', and the game is g.',
         expectation: function (facts, variables) {
             if (variables.hasOwnProperty('roundsInGame') && typeof(variables.roundsInGame) === 'function')
-                return { matched: true };
+                return pass();
             else
-                return { matched: false, message: 'Define a function called "roundsInGame".' };
+                return fail('Define a function called "roundsInGame".');
         }
     },
     {
@@ -199,10 +199,49 @@ var steps = [
         footnote: 'Hint: The name of the template function you just wrote is "roundsInGame"',
         expectation: function (facts, variables) {
             if (variables.hasOwnProperty('roundWatch')) {
-                return { matched: true };
+                return pass();
             }
             else {
-                return { matched: false, message: 'Save the watch to the "roundWatch" variable.' };
+                return fail('Save the watch to the "roundWatch" variable.');
+            }
+        }
+    },
+    {
+        instructions: 'Which card or cards do you think fit best? Choose one or two from the "cards" array and play them. The round is in a variable called "round".',
+        example:
+            'j.fact({'                + '\n' +
+            '    type: \'DAH.Play\''  + '\n' +
+            '    round: round'        + '\n' +
+            '    cards: [cards[n]]'   + '\n' +
+            '});',
+        footnote: 'If you see two blanks, you must select two cards.',
+        expectation: function (facts, variables) {
+            if (facts.length === 0) {
+                return fail('Call the j.fact function to play some cards.');
+            }
+            else if (!facts[0].hasOwnProperty('type')) {
+                return fail('The fact should have a type.');
+            }
+            else if (facts[0].type !== 'DAH.Play') {
+                return fail('The fact\'s type should be \'DAH.Play\'.');
+            }
+            else if (!facts[0].hasOwnProperty('round')) {
+                return fail('The play fact should belong to a round.');
+            }
+            else if (!facts[0].round.hasOwnProperty('type') || facts[0].round.type !== 'DAH.Round') {
+                return fail('Please use the "round" variable to access the current round.');
+            }
+            else if (!facts[0].hasOwnProperty('cards')) {
+                return fail('The play fact should have cards.');
+            }
+            else if (!Array.isArray(facts[0].cards) || facts[0].cards.length < 1 || facts[0].cards.length > 2) {
+                return fail('Cards should be an array of 1 or 2 cards.');
+            }
+            else if (!facts[0].cards[0].hasOwnProperty('type') || facts[0].cards[0].type !== 'DAH.Card') {
+                return fail('The array should contain cards.');
+            }
+            else {
+                return pass();
             }
         }
     },
@@ -211,10 +250,18 @@ var steps = [
         example: 'npm install jinaga',
         footnote: '',
         expectation: function (facts, variables) {
-            return { matched: false, message: 'We\'re done here. Go build a real app.' };
+            return fail('We\'re done here. Go build a real app.');
         }
     }
 ];
+
+function pass() {
+    return { matched: true };
+}
+
+function fail(message) {
+    return { matched: false, message: message };
+}
 
 function skipSteps(variables, j, addCard, showBlackCard) {
     variables.user = {
