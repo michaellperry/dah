@@ -143,19 +143,19 @@ var steps = [
     {
         instructions: 'Since you are a player in a game, a friendly bot has dealt you some cards. Write a function that describes the shape of a card.',
         example:
-            'function cardForPlayer(p) {' + '\n' +
-            '    return {'                + '\n' +
-            '        type: \'DAH.Card\',' + '\n' +
-            '        player: p'           + '\n' +
-            '    };'                      + '\n' +
+            'function cardsForPlayer(p) {' + '\n' +
+            '    return {'                 + '\n' +
+            '        type: \'DAH.Card\','  + '\n' +
+            '        player: p'            + '\n' +
+            '    };'                       + '\n' +
             '}',
         footnote: 'This is called a template function. All cards dealt to a player are facts matching this template.',
         expectation: function (facts, variables) {
-            if (variables.hasOwnProperty('cardForPlayer') && typeof variables.cardForPlayer === 'function') {
+            if (variables.hasOwnProperty('cardsForPlayer') && typeof variables.cardsForPlayer === 'function') {
                 return pass();
             }
             else {
-                return fail('Please define a function called "cardForPlayer".');
+                return fail('Please define a function called "cardsForPlayer".');
             }
         }
     },
@@ -163,7 +163,7 @@ var steps = [
         instructions: 'When you see a fact matching the template function, you want to call the "addCard" function. Set up a "watch" to do just that.',
         example:
             'var cardWatch = j.watch('               + '\n' +
-            '    player, [cardForPlayer], addCard);',
+            '    player, [cardsForPlayer], addCard);',
         footnote: 'I bet you are wondering why we\'re passing an array of template functions. That\'s a good question.',
         expectation: function (facts, variables) {
             if (variables.hasOwnProperty('cardWatch')) {
@@ -289,7 +289,7 @@ var steps = [
     {
         instructions: 'Use that function to define a new template function. This time, we\'ll exclude played cards.',
         example:
-            'function unplayedCardForPlayer(p) {'  + '\n' +
+            'function unplayedCardsForPlayer(p) {' + '\n' +
             '    return j.where({'                 + '\n' +
             '        type: \'DAH.Card\','          + '\n' +
             '        player: p'                    + '\n' +
@@ -297,12 +297,12 @@ var steps = [
             '}',
         footnote: '',
         expectation: function (facts, variables) {
-            if (!variables.hasOwnProperty('unplayedCardForPlayer') || typeof(variables.unplayedCardForPlayer) !== 'function') {
-                return fail('Write a function called "unplayedCardForPlayer".');
+            if (!variables.hasOwnProperty('unplayedCardsForPlayer') || typeof(variables.unplayedCardsForPlayer) !== 'function') {
+                return fail('Write a function called "unplayedCardsForPlayer".');
             }
             else {
                 var proxy = {};
-                var template = variables.unplayedCardForPlayer(proxy);
+                var template = variables.unplayedCardsForPlayer(proxy);
                 if (!template || template.toString() !== '[object Object]') {
                     return fail('The template function should return an object.')
                 }
@@ -312,6 +312,22 @@ var steps = [
                 else {
                     return pass();
                 }
+            }
+        }
+    },
+    {
+        instructions: 'Now let\'s watch for cards using that template function. We\'ll add another parameter for a function to call when a card should be removed.',
+        example:
+            'j.watch(' + '\n' +
+            '    player, [unplayedCardsForPlayer],' + '\n' +
+            '    addCard, removeCard);',
+        footnote: 'The "removeCard" function will be called whenever you play a card.',
+        expectation: function (facts, variables, cards) {
+            if (cards.length === 0) {
+                return fail('Watch for unplayed cards so that you can see what you have.');
+            }
+            else {
+                return pass();
             }
         }
     },
@@ -354,7 +370,7 @@ function skipSteps(variables, j, addCard, showBlackCard) {
     };
     j.fact(variables.player);
 
-    variables.cardForPlayer = function (p) {
+    variables.cardsForPlayer = function (p) {
         return {
             type: 'DAH.Card',
             player: p
@@ -363,7 +379,7 @@ function skipSteps(variables, j, addCard, showBlackCard) {
 
     variables.cardWatch = j.watch(
         variables.player,
-        [variables.cardForPlayer],
+        [variables.cardsForPlayer],
         addCard
     );
 

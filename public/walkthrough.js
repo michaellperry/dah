@@ -66,6 +66,14 @@ var vm = new (function () {
     function addCard(card) {
         cards.push(card);
         sandbox.variables.cards = cards();
+        return card;
+    }
+    function removeCard(card) {
+        var index = cards.indexOf(card);
+        if (index >= 0) {
+            cards.splice(index, 1);
+            sandbox.variables.cards = cards();
+        }
     }
     function clearCards() {
         cards.removeAll();
