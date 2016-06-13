@@ -215,3 +215,53 @@ var steps = [
         }
     }
 ];
+
+function skipSteps(variables, j, addCard, showBlackCard) {
+    variables.user = {
+        type: 'Jinaga.User',
+        identity: 42
+    };
+    j.fact(variables.user);
+
+    variables.game = {
+        type: 'DAH.Game',
+        root: {},
+        identity: 37
+    };
+    j.fact(variables.game);
+
+    variables.player = {
+        type: 'DAH.Player',
+        user: variables.user,
+        game: variables.game
+    };
+    j.fact(variables.player);
+
+    variables.cardForPlayer = function (p) {
+        return {
+            type: 'DAH.Card',
+            player: p
+        };
+    };
+
+    variables.cardWatch = j.watch(
+        variables.player,
+        [variables.cardForPlayer],
+        addCard
+    );
+
+    variables.roundsInGame = function (g) {
+        return {
+            type: 'DAH.Round',
+            game: g
+        };
+    };
+
+    variables.roundWatch = j.watch(
+        variables.game,
+        [variables.roundsInGame],
+        showBlackCard
+    );
+
+    return 9;
+}

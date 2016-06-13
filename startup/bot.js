@@ -47,9 +47,12 @@ function Bot(j) {
         var players = [];
         var playerWatch = null;
         var whiteCards = getWhiteCards();
+        var blackCards = getBlackCards();
         
         this.start = function () {
             playerWatch = j.watch(game, [playerInGame], addPlayer, removePlayer);
+
+            dealBlackCard();
         }
         this.stop = function () {
             playerWatch.stop();
@@ -69,14 +72,29 @@ function Bot(j) {
         }
         
         function dealWhiteCard(player) {
-            var index = Math.floor(Math.random() * whiteCards.length);
-            var card = whiteCards[index];
-            whiteCards.splice(index, 1);
+            var card = selectCardAtRandom(whiteCards);
             j.fact({
                 type: 'DAH.Card',
                 player: player,
                 phrase: card
             });
+        }
+
+        function dealBlackCard() {
+            var card = selectCardAtRandom(blackCards);
+            j.fact({
+                type: 'DAH.Round',
+                game: game,
+                phrase: card.phrase,
+                cards: card.cards
+            });
+        }
+
+        function selectCardAtRandom(deck) {
+            var index = Math.floor(Math.random() * deck.length);
+            var card = deck[index];
+            deck.splice(index, 1);
+            return card;
         }
     }
 }
