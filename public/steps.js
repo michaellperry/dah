@@ -209,10 +209,8 @@ var steps = [
     {
         instructions: 'Which card or cards do you think fit best? Choose one or two from the "cards" array and play them. The round is in a variable called "round".',
         example:
-            'j.fact({'                + '\n' +
-            '    type: \'DAH.Play\''  + '\n' +
-            '    round: round'        + '\n' +
-            '    cards: [cards[n]]'   + '\n' +
+            'j.fact({'                       + '\n' +
+            '    // type, round, and cards'  + '\n' +
             '});',
         footnote: 'If you see two blanks, you must select two cards.',
         expectation: function (facts, variables) {
@@ -242,6 +240,78 @@ var steps = [
             }
             else {
                 return pass();
+            }
+        }
+    },
+    {
+        instructions: 'That\'s odd. The card didn\'t leave your hand. Here, let\'s stop that watch and create a new one.',
+        example:
+            'cardWatch.stop();' + '\n' +
+            'clearCards();',
+        footnote: '',
+        expectation: function (facts, variables, cards) {
+            if (cards.length > 0) {
+                return fail('Call the "clearCards" function to get rid of these cards.');
+            }
+            else {
+                return pass();
+            }
+        }
+    },
+    {
+        instructions: 'Now let\'s define a template function that looks for played cards. A played card has a fact of type \'DAH.Play\' following it.',
+        example:
+            'function playedCard(c) {' + '\n' +
+            '}',
+        footnote: 'Try writing the template function yourself. I\'ll guide you.',
+        expectation: function (facts, variables) {
+            if (!variables.hasOwnProperty('playedCard') || typeof(variables.playedCard) !== 'function') {
+                return fail('Write a function called "playedCard".');
+            }
+            else {
+                var proxy = {};
+                var template = variables.playedCard(proxy);
+                if (!template || template.toString() !== '[object Object]') {
+                    return fail('The template function should return an object.')
+                }
+                else if (!template.hasOwnProperty('type') || template.type !== 'DAH.Play') {
+                    return fail('The template should have a type of \'DAH.Play\'.');
+                }
+                else if (!template.hasOwnProperty('cards') || template.cards !== proxy) {
+                    return fail('The template should have a property called \'cards\' that should be equal to the parameter.');
+                }
+                else {
+                    return pass();
+                }
+            }
+        }
+    },
+    {
+        instructions: 'Use that function to define a new template function. This time, we\'ll exclude played cards.',
+        example:
+            'function unplayedCardForPlayer(p) {'  + '\n' +
+            '    return j.where({'                 + '\n' +
+            '        type: \'DAH.Card\','          + '\n' +
+            '        player: p'                    + '\n' +
+            '    }, [j.not(playedCard)]);'         + '\n' +
+            '}',
+        footnote: '',
+        expectation: function (facts, variables) {
+            if (!variables.hasOwnProperty('unplayedCardForPlayer') || typeof(variables.unplayedCardForPlayer) !== 'function') {
+                return fail('Write a function called "unplayedCardForPlayer".');
+            }
+            else {
+                var proxy = {};
+                var template = variables.unplayedCardForPlayer(proxy);
+                if (!template || template.toString() !== '[object Object]') {
+                    return fail('The template function should return an object.')
+                }
+                else if (template.constructor.name !== 'ConditionalSpecification') {
+                    return fail('Use the j.where function to add a where clause to your template.');
+                }
+                else {
+                    return pass();
+                }
             }
         }
     },

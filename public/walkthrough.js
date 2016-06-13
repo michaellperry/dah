@@ -12,6 +12,12 @@ var vm = new (function () {
             },
             watch: function watch(start, templates, resultAdded, resultRemoved) {
                 return jinaga.watch(start, templates, resultAdded, resultRemoved);
+            },
+            where: function where(specification, conditions) {
+                return jinaga.where(specification, conditions);
+            },
+            not: function not(conditionOrSpecification) {
+                return jinaga.not(conditionOrSpecification);
             }
         };
         this.variables = {};
