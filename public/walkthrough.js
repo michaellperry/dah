@@ -1,5 +1,21 @@
 var jinaga = new Jinaga();
 jinaga.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
+var now = new Date();
+var session = {
+    type: 'DAH.Meta.Session',
+    day: {
+        type: 'DAH.Meta.Day',
+        application: {
+            type: 'DAH.Meta.Application',
+            identifier: distributorUrl
+        },
+        year: now.getUTCFullYear(),
+        month: now.getUTCMonth(),
+        date: now.getUTCDate()
+    },
+    started: now
+};
+jinaga.fact(session);
 
 var vm = new (function () {
     var nextFacts = [];
@@ -108,6 +124,12 @@ var vm = new (function () {
                 sandbox.advance();
                 this.step(this.step()+1);
                 this.code('');
+                jinaga.fact({
+                    type: 'DAH.Meta.Step',
+                    session: session,
+                    step: this.step(),
+                    completed: new Date()
+                });
             }
             else {
                 this.exception(result.message);
